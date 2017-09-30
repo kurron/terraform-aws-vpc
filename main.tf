@@ -95,7 +95,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_route" "public" {
     count                  = "${length( compact( data.aws_availability_zones.available.names ) )}"
-    route_table_id         = "${aws_route_table.public.id}"
+    route_table_id         = "${element( aws_route_table.public.*.id, count.index )}"
     destination_cidr_block = "0.0.0.0/0"
     gateway_id             = "${aws_internet_gateway.main.id}"
 }
@@ -103,7 +103,7 @@ resource "aws_route" "public" {
 resource "aws_route_table_association" "public" {
     count          = "${length( data.aws_availability_zones.available.names )}"
     subnet_id      = "${element( aws_subnet.public.*.id, count.index )}"
-    route_table_id = "${aws_route_table.public.id}"
+    route_table_id = "${element( aws_route_table.public.*.id, count.index )}"
 }
 
 resource "aws_route_table" "private" {
