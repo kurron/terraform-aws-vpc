@@ -1,16 +1,19 @@
 # Overview
-This Terraform module ...
+This Terraform module is an opinionated view on how to build a VPC.  It places
+both a public and private subnet in all availability zones.  This is for both
+fault tolerance as well as to draw on a larger market for Spot intances.
 
 # Prerequisites
-
 * [Terraform](https://terraform.io/) installed and working
 * Development and testing was done on [Ubuntu Linux](http://www.ubuntu.com/)
-* The environment variable `AWS_ACCESS_KEY_ID` set to your AWS Access Key ID
-* The environment variable `AWS_SECRET_ACCESS_KEY` set to your AWS Secret Access Key
 
 # Building
+Since this is just a collection of Terraform scripts, there is nothing to build.
 
 # Installation
+This module is not installed but, instead, is obtained by the project using
+the module.  See [kurron/terraform-environments](https://github.com/kurron/terraform-environments)
+for example usage.
 
 # Tips and Tricks
 
