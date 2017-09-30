@@ -49,11 +49,11 @@ variable "cidr_range" {
 }
 
 variable "public_subnets" {
-    description = "List of IP ranges for the public subnets, e.g. ["10.0.2.0/24", "10.0.4.0/24"]"
+    description = "List of IP ranges for the public subnets, e.g. [10.0.2.0/24, 10.0.4.0/24]"
     type        = "list"
 }
 
 variable "private_subnets" {
-    description = "List of IP ranges for the private subnets, e.g. ["10.0.1.0/24", "10.0.3.0/24"]"
+    description = "List of IP ranges for the private subnets, e.g. [10.0.1.0/24, 10.0.3.0/24]"
     type        = "list"
 }
