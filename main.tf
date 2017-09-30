@@ -81,6 +81,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_route_table" "public" {
+    count  = "${length( data.aws_availability_zones.available.names ) }"
     vpc_id = "${aws_vpc.main.id}"
     tags {
         Name        = "Public ${format("%02d", count.index+1 )}"
@@ -93,6 +94,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route" "public" {
+    count                  = "${length( compact( data.aws_availability_zones.available.names ) )}"
     route_table_id         = "${aws_route_table.public.id}"
     destination_cidr_block = "0.0.0.0/0"
     gateway_id             = "${aws_internet_gateway.main.id}"
