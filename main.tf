@@ -46,6 +46,14 @@ resource "aws_nat_gateway" "main" {
     allocation_id = "${element( aws_eip.nat.*.id, count.index) }"
     subnet_id     = "${element( aws_subnet.public.*.id, count.index )}"
     depends_on    = ["aws_internet_gateway.main"]
+    tags {
+        Name        = "${var.name} ${format( "NAT %02d", count.index+1 )}"
+        Project     = "${var.project}"
+        Purpose     = "Allows for outbound internet traffic from the private subnets"
+        Creator     = "${var.creator}"
+        Environment = "${var.environment}"
+        Freetext    = "${var.freetext}"
+    }
 }
 
 resource "aws_subnet" "public" {
