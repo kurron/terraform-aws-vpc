@@ -17,6 +17,14 @@ for example usage.
 
 # Tips and Tricks
 
+## Subnet Ranges
+The module automatically detects the number of availability zones in the region
+and installs both public and a private subnet in each zone.  When specifying
+`public_subnets` and `private_subnets` make sure to provide enough choices to
+match the number of availability zones.  If the list is short, Terraform
+will attempt to reuse an entry in the list and the subnet construction will
+fail.
+
 # Troubleshooting
 
 # License and Credits
