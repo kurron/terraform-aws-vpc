@@ -3,7 +3,7 @@
 rm -rf .terraform
 
 INIT="terraform init -backend=true \
-                     -backend-config=backend.cfg \
+                     -backend-config=debug/backend.cfg \
                      -get=true \
                      -get-plugins=true \
                      -input=true \
@@ -15,18 +15,19 @@ echo ${INIT}
 ${INIT}
 
 export TF_LOG=DEBUG
-export TF_LOG_PATH=terraform-log.txt
-rm -f terraform-log.txt
+export TF_LOG_PATH=debug/terraform-log.txt
+rm -f debug/terraform-log.txt
 
 PLAN="terraform plan -refresh=true \
                      -input=false \
                      -lock=true \
-                     -out=proposed-changes.plan \
+                     -out=debug/proposed-changes.plan \
+                     -var-file=debug/configuration.tf \
                      -refresh=true"
 echo ${PLAN}
 ${PLAN}
 
-SHOW="terraform show proposed-changes.plan"
+SHOW="terraform show debug/proposed-changes.plan"
 echo ${SHOW}
 ${SHOW}
 
@@ -34,7 +35,7 @@ APPLY="terraform apply -refresh=true \
                        -lock=true \
                        -auto-approve=true \
                        -input=false \
-                       proposed-changes.plan"
+                       debug/proposed-changes.plan"
 echo ${APPLY}
 #${APPLY}
 
