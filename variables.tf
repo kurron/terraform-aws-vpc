@@ -47,3 +47,8 @@ variable "private_subnets" {
     description = "List of IP ranges for the private subnets, e.g. [10.0.1.0/24, 10.0.3.0/24]"
     type        = "list"
 }
+
+variable "populate_all_zones" {
+    description = "If true, all availability zones will be assigned a public and private subnet, otherwise limit creation to the subnet lists"
+    type        = "string"
+}

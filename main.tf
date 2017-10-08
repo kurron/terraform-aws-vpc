@@ -25,7 +25,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_eip" "nat" {
-    count = "${length( data.aws_availability_zones.available.names )}"
+    count = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     vpc   = true
 }
 
@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_nat_gateway" "main" {
-    count         = "${length( data.aws_availability_zones.available.names )}"
+    count = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     allocation_id = "${element( aws_eip.nat.*.id, count.index) }"
     subnet_id     = "${element( aws_subnet.public.*.id, count.index )}"
     depends_on    = ["aws_internet_gateway.main"]
@@ -61,7 +61,7 @@ resource "aws_subnet" "public" {
     cidr_block              = "${element( var.public_subnets, count.index )}"
     vpc_id                  = "${aws_vpc.main.id}"
     map_public_ip_on_launch = true
-    count                   = "${length( data.aws_availability_zones.available.names )}"
+    count = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.public_subnets )}"
     tags {
         Name        = "${var.name} ${format( "Public %02d", count.index+1 )}"
         Project     = "${var.project}"
@@ -77,7 +77,7 @@ resource "aws_subnet" "private" {
     cidr_block              = "${element( var.private_subnets, count.index )}"
     vpc_id                  = "${aws_vpc.main.id}"
     map_public_ip_on_launch = false
-    count                   = "${length( data.aws_availability_zones.available.names )}"
+    count = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     tags {
         Name        = "${var.name} ${format( "Private %02d", count.index+1 )}"
         Project     = "${var.project}"
@@ -107,14 +107,14 @@ resource "aws_route" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-    count          = "${length( data.aws_availability_zones.available.names )}"
+    count          = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.public_subnets )}"
     subnet_id      = "${element( aws_subnet.public.*.id, count.index )}"
     route_table_id = "${element( aws_route_table.public.*.id, count.index )}"
 }
 
 resource "aws_route_table" "private" {
-    count  = "${length( data.aws_availability_zones.available.names ) }"
     vpc_id = "${aws_vpc.main.id}"
+    count  = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     tags {
         Name        = "${var.name} Private ${format("%02d", count.index+1 )}"
         Project     = "${var.project}"
@@ -126,14 +126,14 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private" {
-    count                  = "${length( compact( data.aws_availability_zones.available.names ) )}"
+    count                  = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     route_table_id         = "${element( aws_route_table.private.*.id, count.index )}"
     destination_cidr_block = "0.0.0.0/0"
     nat_gateway_id         = "${element( aws_nat_gateway.main.*.id, count.index )}"
 }
 
 resource "aws_route_table_association" "private" {
-    count          = "${length( data.aws_availability_zones.available.names )}"
+    count          = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.private_subnets )}"
     subnet_id      = "${element( aws_subnet.private.*.id, count.index) }"
     route_table_id = "${element( aws_route_table.private.*.id, count.index) }"
 }

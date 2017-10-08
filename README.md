@@ -17,6 +17,11 @@ for example usage.
 
 # Tips and Tricks
 
+## Debugging
+The `debug` folder contains files that can be used to test out local changes
+to the module.  Edit `backend.cfg` and `configuration.tf` to your liking and
+then run `debug/debug-module.sh` to test your changes.
+
 ## Subnet Ranges
 The module automatically detects the number of availability zones in the region
 and installs both public and a private subnet in each zone.  When specifying

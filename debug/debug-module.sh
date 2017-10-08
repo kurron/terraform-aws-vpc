@@ -37,8 +37,10 @@ APPLY="terraform apply -refresh=true \
                        -input=false \
                        debug/proposed-changes.plan"
 echo ${APPLY}
-#${APPLY}
+${APPLY}
 
-DESTROY="terraform destroy -refresh=true -input=false"
+DESTROY="terraform destroy -refresh=true \
+                           -var-file=debug/configuration.tf \
+                           -input=false"
 echo ${DESTROY}
-#${DESTROY}
+${DESTROY}
