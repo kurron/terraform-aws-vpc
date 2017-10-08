@@ -1,2 +1,5 @@
 *.backup
 hosts.ini
+proposed-changes.plan
+.terraform/
+terraform-log.txt
