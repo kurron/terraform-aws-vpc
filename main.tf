@@ -60,7 +60,7 @@ resource "aws_subnet" "public" {
     availability_zone       = "${element( data.aws_availability_zones.available.names, count.index )}"
     cidr_block              = "${element( var.public_subnets, count.index )}"
     vpc_id                  = "${aws_vpc.main.id}"
-    map_public_ip_on_launch = false
+    map_public_ip_on_launch = true
     count                   = "${var.populate_all_zones == "true" ? length( data.aws_availability_zones.available.names ) : length( var.public_subnets )}"
     tags {
         Name        = "${var.name} ${format( "Public %02d", count.index+1 )}"
