@@ -19,16 +19,22 @@ for example usage.
 
 ## Debugging
 The `debug` folder contains files that can be used to test out local changes
-to the module.  Edit `backend.cfg` and `configuration.tf` to your liking and
+to the module.  Edit `backend.cfg` and `plan.tf` to your liking and
 then run `debug/debug-module.sh` to test your changes.
 
 ## Subnet Ranges
 The module automatically detects the number of availability zones in the region
 and installs both public and a private subnet in each zone.  When specifying
 `public_subnets` and `private_subnets` make sure to provide enough choices to
-match the number of availability zones.  If the list is short, Terraform
+match the number of availability zones in the region.  If the list is short, Terraform
 will attempt to reuse an entry in the list and the subnet construction will
-fail.
+fail. This behavior can be disabled by setting the `populate_all_zones` property
+to `false`.  In this scenario, all provided subnets will be created, regardless
+of the number of availability zones in the region.
+
+## Private Subnets
+If you do not want to create private subnets, set the `private_subnets` property
+to an empty list.
 
 # Troubleshooting
 

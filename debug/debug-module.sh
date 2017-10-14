@@ -22,7 +22,7 @@ PLAN="terraform plan -refresh=true \
                      -input=false \
                      -lock=true \
                      -out=debug/proposed-changes.plan \
-                     -var-file=debug/configuration.tf \
+                     -var-file=debug/plan.tf \
                      -refresh=true"
 echo ${PLAN}
 ${PLAN}
@@ -40,7 +40,7 @@ echo ${APPLY}
 ${APPLY}
 
 DESTROY="terraform destroy -refresh=true \
-                           -var-file=debug/configuration.tf \
+                           -var-file=debug/plan.tf \
                            -input=false"
 echo ${DESTROY}
 ${DESTROY}
