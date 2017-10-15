@@ -20,7 +20,7 @@ resource "aws_vpc" "main" {
         Purpose     = "${var.purpose}"
         Creator     = "${var.creator}"
         Environment = "${var.environment}"
-        Freetext    = "${var.freetext}"
+        Freetext    = "No notes yet."
     }
 }
 
